@@ -1,0 +1,149 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "MTA SIRI StopMonitoring API",
+		"version": "1.0.0"
+	},
+	"servers": [
+		{
+			"url": "https://nyc-transportation-gpt.vercel.app"
+		}
+	],
+	"paths": {
+		"/api/search-route": {
+			"get": {
+				"summary": "Search for a route ID by a description",
+				"parameters": [
+					{
+						"name": "description",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The description of a bus route to search for."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"routeIds": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/route-stops/{routeId}": {
+			"summary": "Get the stops for a route",
+			"description": "Get all the stopIds of a given route",
+			"parameters": [
+				{
+					"name": "routeId",
+					"description": "The ID of the route to get the stops for.",
+					"in": "path",
+					"required": true,
+					"schema": {
+						"type": "string"
+					}
+				}
+			],
+			"get": {
+				"responses": {
+					"200": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object",
+											"properties": {
+												"entry": {
+													"type": "object",
+													"properties": {
+														"stopIds": {
+															"type": "array",
+															"items": {
+																"type": "string"
+															}
+														}
+													}
+												},
+												"references": {
+													"type": "object",
+													"properties": {
+														"stops": {
+															"type": "array",
+															"items": {
+																"type": "object",
+																"properties": {
+																	"id": {
+																		"type": "string"
+																	},
+																	"direction": {
+																		"type": "string"
+																	},
+																	"name": {
+																		"type": "number"
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
